@@ -1,21 +1,27 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import loader from './loader.svg'
 
 const App = () => {
   const [photos, setPhotos] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [fetching, setFetching] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
+  const [loading, setLoading] = useState(0)
 
   useEffect(()=>{
+    setLoading(true)
     if(fetching){
-      axios.get(`https://jsonplaceholder.typicode.com/photos?_limit=10&_page=${currentPage}`)
+      setTimeout(()=> {
+        axios.get(`https://jsonplaceholder.typicode.com/photos?_limit=10&_page=${currentPage}`)
     .then(res => {
       setTotalCount(res.headers['x-total-count'])
       setPhotos([...photos, ...res.data])
       setCurrentPage(currentPage + 1)
+      setLoading(false)
     })
     .finally(()=> setFetching(false))
+      }, 1000)
     }
   }, [fetching])
 
@@ -42,6 +48,11 @@ const App = () => {
           <img src={photo.thumbnailUrl}/>
         </div>
         )}
+        {loading && 
+          <div className='loader'>
+            <img src={loader}/>
+          </div>
+        }
     </div>
   )
 }

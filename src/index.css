@@ -34,3 +34,12 @@ code {
 .title{
   font-size: 24px;
 }
+
+.loader{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.loader img{
+  width: 100px;
+}
